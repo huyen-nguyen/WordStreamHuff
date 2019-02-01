@@ -22,7 +22,7 @@ var fileList = ["WikiNews", "Huffington", "CrooksAndLiars", "EmptyWheel","Esquir
 
 ];
 
-var initialDataset = "WikiNews";
+var initialDataset = "Huffington";
 var categories = ["person","location","organization","miscellaneous"];
 
 var fileName;
@@ -332,8 +332,6 @@ function draw(data){
         // Select the data for the stream layers
         var streamLayer = d3.select("path[topic='"+ topic+"']" )[0][0].__data__; // at this time: not available
 
-        console.log("streamLayer:");
-        console.log(streamLayer);
         //Push all points
         var points = Array();
         //Initialize all points
