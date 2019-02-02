@@ -6,6 +6,7 @@
 
 
     <script type="text/javascript" src="https://d3js.org/d3.v3.js"></script>
+    <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <style>
@@ -44,6 +45,10 @@
             padding: 0;
         }
 
+        .hexagon {
+            stroke: white;
+            stroke-width: 1.5px;
+        }
 
     </style>
 
@@ -51,6 +56,7 @@
 
 <body>
 <script type="text/javascript">
+    var categories = ["person","location","organization","miscellaneous"];
     var color = d3.scale.category10();
     function getColor(category) {
         if (category=="person")
@@ -63,26 +69,30 @@
             return color(3) ; // leaf node
         else
             return "#000000";
-
     }
 
-    var interpolateTypes = ['linear'];
+    var interpolateTypes = ['cardinal-closed'];
     var line = d3.svg.line()
         .x(d => d.x)
         .y(d => d.y)
-        .interpolate(interpolateTypes[0]);
+        .interpolate(interpolateTypes[0])
+    ;
+
+    // Hexbin generator
+    var hexbin = d3.hexbin().radius(9)
+       ;
 
     d3.json("../data/EmptyWheel.json", function(error, data) {
         if (error) throw error;
-        console.log(data);
 
-        var categories = ["person","location","organization","miscellaneous"];
-        var width = 700,
+        var width = 1000,
             height = 700,
             padding = 50;
 
         var topwords = 50;
         var dataset = [];
+        var points = [];
+        var size = [];
 
         data.forEach((month, i) => {
             categories.forEach((topic,j) => {
@@ -98,25 +108,9 @@
                 }
             })
         });
-
+        console.log("dataset:");
         console.log(dataset);
-
-        var div = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0);
-
-
-        // svg
-        var svg = d3.select("body").append("svg")
-            .attr({
-                width: width,
-                height: height
-            });
-
-        var connection = svg.append("g").append("path");
-
         // Configure scale
-        // x: freq
         var xScale = d3.scale.linear()
             .domain([0,d3.max(dataset, d => d["frequency"])])
             .range([padding, width - padding]);
@@ -140,6 +134,42 @@
             .orient("left")
             .ticks(5);
 
+
+
+        var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        // svg
+        var svg = d3.select("body").append("svg")
+            .attr({
+                width: width,
+                height: height
+            });
+
+        var connection = svg.append("g").append("path");
+
+        dataset.forEach((d,i) => {
+            points.push([xScale(d["frequency"]), yScale(d["sudden"])])
+        });
+
+        hexbin(points).forEach(d => size.push(d.length));
+
+        var step = d3.scale.linear()
+            .domain([1, 7])
+            .range([1, Math.max(...size)]);
+
+        // var colorHex =  color = d3.scale.linear()
+        //     .domain([1, Math.max(...size)])
+        //     .range(["steelblue", "brown"])
+        //     .interpolate(d3.interpolateHcl);
+
+        var colorHex = d3.scale.linear()
+            .domain([0, step(2), step(3), step(4),
+                step(5), step(6), Math.max(...size)])
+            .range(['#3a66f8', '#4ac4fa', '#8af5fc', '#d2ff54', '#f6e536', '#db6831', '#da1c03'])
+            .interpolate(d3.interpolateHcl);
+
         // Clip path, as a rect
         svg.append("clipPath")
             .attr("id","clip")
@@ -155,7 +185,7 @@
         // svg first appends a group, add atrribute clip-path to that group
         // then selectAll("circle") as usual
 
-        svg.append("g")
+        svg.append("g").attr("id", "circles")
         // .attr("clip-path","url(#clip)")
             .selectAll("circle")
             .data(dataset)
@@ -167,7 +197,9 @@
                 r: d => rScale(d["frequency"]),
                 "fill": d => getColor(d["topic"]),
                 "class": d => d["word"].split(" ").join("").split(".").join(""),
-                "id": d => d["word"]
+                "id": d => d["word"],
+                "opacity": 0
+
             })
             .on("mouseover", function (d) {
                 div.transition()
@@ -182,7 +214,6 @@
                 var arr = [];
                 d3.selectAll("." + $(this).attr("class"))[0].forEach((d,i) => {
                     arr.push({
-                        "id": "path_" + d.getAttribute("class"),
                         x: d.getAttribute("cx"),
                         y: d.getAttribute("cy")
                     })
@@ -208,6 +239,18 @@
                     .style("opacity",0);
             })
         ;
+
+        svg.append("g")
+            .attr("class", "hexagon")
+            .selectAll(".hex")
+            .data(hexbin(points))		// take in each bin
+            .enter()
+            .append("path")
+            .attr("d", hexbin.hexagon())	// return path string with the specified radius
+            .attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")"})
+            // slide hexagon to the right position
+            .attr("fill", function(d) {return colorHex(d.length)});	// color with corresponding color
+
 
         svg.append("g")
             .attr({
@@ -239,7 +282,6 @@
             .style("text-anchor", "middle")
             .text("Sudden attention")
             .attr("font-size", "20px");
-
 
     });
 </script>
