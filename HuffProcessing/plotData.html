@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sudden - Freq</title>
+
+    <script type="text/javascript" src="https://d3js.org/d3.v3.js"></script>
+    <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+
+        .axis path,     /* long line, apply with same rules as line */
+        .axis line      /* tick */
+        {
+            fill: none;
+            stroke: black;
+            stroke-width: 1px;
+            shape-rendering: auto;
+        }
+
+        .axis text {
+            fill: #262721;
+            font-family: sans-serif;
+            font-size: 13px;
+        }
+        div.tooltip {
+            position: absolute;
+            text-align: center;
+            width: 70px;
+            height: 30px;
+            padding: 2px;
+            padding-top: 10px;
+            font: 16px sans-serif;
+            background: #efefef;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            align-items: center;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .hexagon {
+            stroke: white;
+            stroke-width: 1.5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<script type="text/javascript">
+    var categories = ["person","location","organization","miscellaneous"];
+    var width = 1000,
+        height = 700,
+        padding = 80;
+
+    var topRange = 50;
+    var topWords = [];
+
+    var maxSudden = {};
+    var uniqueObj = {};
+    var id = {};
+    var testId = {};
+
+    var uniqueWords = [];
+    var dataset = [];
+    var points = [];
+    var size = [];
+
+    var color = d3.scale.category10();
+    function getColor(category) {
+        if (category=="person")
+            return color(0) ; // leaf node
+        else if (category=="location")
+            return color(1) ; // leaf node
+        else if (category=="organization")
+            return color(2) ; // leaf node
+        else if (category=="miscellaneous")
+            return color(3) ; // leaf node
+        else
+            return "#000000";
+    }
+
+    var interpolateTypes = ['cardinal'];
+    var line = d3.svg.line()
+        .x(d => d.x)
+        .y(d => d.y)
+        .interpolate(interpolateTypes[0])
+    ;
+
+    // Hexbin generator
+    var hexbin = d3.hexbin().radius(9)
+       ;
+
+    d3.json("../data/Huff.json", function(error, data) {
+        if (error) throw error;
+
+        data.forEach((month, i) => {
+            categories.forEach((topic,j) => {
+                for (let k = 0; k < topRange; k++){
+                    var word = month["words"][topic][k];
+                    topWords.push({
+                        frequency: word.frequency,
+                        id: word.id,
+                        sudden: word.sudden,
+                        topic: word.topic,
+                        text: word.text,
+                        short: word.text.split(" ").join("").split(".").join("") +
+                            word.topic.split(" ").join("").split(".").join("")
+                    });
+                }
+            })
+        });
+
+        console.log("topWords:");
+        console.log(topWords);  // 18,800
+
+        // init max sudden
+        topWords.forEach((word,i) => {
+            uniqueObj[word.text] = 1;
+            maxSudden[word.text] = 1;
+        });
+
+        topWords.forEach((word,i) => {
+            if (word.sudden >= maxSudden[word.text]){
+                maxSudden[word.text] = word.sudden;
+                id[word.text] = word.id;
+            }
+        });
+
+        // S1:
+        uniqueWords = [];
+        topWords.forEach((word,i) => {
+            if (word.id === id[word.text]){
+                uniqueWords.push(word);
+            }
+        });
+
+        data.forEach((month, i) => {
+            categories.forEach((topic,j) => {
+                month["words"][topic].forEach((word,k) => {
+                    if (maxSudden[word.text] !== undefined) {
+                        dataset.push({
+                            frequency: word.frequency,
+                            id: word.id,
+                            sudden: word.sudden,
+                            topic: word.topic,
+                            text: word.text,
+                            short: word.text.split(" ").join("").split(".").join("") + word.topic.split(" ").join("").split(".").join("")
+                        });
+                    }
+                });
+            })
+        });
+
+        console.log("dataset:");
+        console.log(dataset);
+        // Configure scale
+        var xScale =
+            d3.scale.log()
+            .domain([1,d3.max(dataset, d => d["frequency"])])
+            .range([padding, width - padding]);
+
+        var yScale = d3.scale.log()
+            .domain([0.1,d3.max(dataset, d => d["sudden"])])
+            .range([height - padding, padding]);
+
+        var rScale = d3.scale.linear()
+            .domain([0, d3.max(dataset, d => d["frequency"])])
+            .range([2,6]);
+
+        // Configure axis
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient("bottom")
+            .ticks(5);
+
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .orient("left")
+            .ticks(5);
+
+        // svg
+        var svg = d3.select("body").append("svg")
+            .attr({
+                width: width,
+                height: height
+            });
+
+        var svg2 = d3.select("body").append("svg")
+            .attr({
+                width: width,
+                height: height
+            });
+
+        var connection = svg.append("g").attr("id", "connection").append("path");
+
+        var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        var family = svg.append("g").attr("id", "family");
+
+        dataset.forEach((d,i) => {
+            points.push([xScale(d["frequency"]), yScale(d["sudden"])])
+        });
+
+        hexbin(points).forEach(d => size.push(d.length));
+
+        var step = d3.scale.linear()
+            .domain([1, 7])
+            .range([1, Math.max(...size)]);
+
+        var colorHex = d3.scale.linear()
+            .domain([0, step(2), step(3), step(4),
+                step(5), step(6), Math.max(...size)])
+            .range(['#3a66f8', '#4ac4fa', '#8af5fc', '#d2ff54', '#f6e536', '#db6831', '#da1c03'])
+            .interpolate(d3.interpolateHcl);
+
+        // Clip path, as a rect
+        svg.append("clipPath")
+            .attr("id","clip")
+            .append("rect")
+            .attr({
+                width: width - padding * 2,
+                height: height - padding * 2,
+                x: padding,
+                y: padding
+            });
+
+        // Draw: Put circle inside clip path
+        // svg first appends a group, add atrribute clip-path to that group
+        // then selectAll("circle") as usual
+
+        svg.append("g").attr("id", "circles")
+        // .attr("clip-path","url(#clip)")
+            .selectAll("circle")
+            .data(uniqueWords)      // draw only circles in uniqueWords
+            .enter()
+            .append("circle")
+            .attr({
+                cx: d => xScale(d["frequency"]),
+                cy: d => yScale(d["sudden"]),
+                r: d => rScale(d["frequency"]),
+                "fill": d => getColor(d["topic"]),
+                "class": d => d["short"],
+                // "opacity": 0
+            })
+            .on("mouseover", function (d) {
+                // tooltip
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9)
+                    .style("color", getColor(d["topic"]))
+                    .style("width", (d["text"].length * 10) + "px");
+                div.html(d.text)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+
+                console.log("# of \"" + d["short"] +"\" points: " + dataset.filter(d => d["short"] ===
+                    $(this).attr("class")).length);
+                // JOIN new data with old elements.
+                var relation = family.selectAll("circle")
+                    .data(dataset.filter(d => d["short"] === $(this).attr("class")), d => d.id);
+
+                // EXIT old elements not present in new data.
+                relation.exit()
+                    .transition()
+                    .duration(200)
+                    .attr("opacity", 1e-6)
+                    .remove();
+
+                // UPDATE old elements present in new data.
+                relation.attr("opacity", 1)
+                    .transition()
+                    .duration(200)
+                    .attr({
+                        cx: d => xScale(d["frequency"]),
+                        cy: d => yScale(d["sudden"]),
+                        r: d => rScale(d["frequency"]),
+                        "fill": d => getColor(d["topic"]),
+                        "class": d => d["short"],
+                    });
+
+                // ENTER new elements present in new data.
+                     relation.enter()
+                    .append("circle")
+                    .attr({
+                        cx: d => xScale(d["frequency"]),
+                        cy: d => yScale(d["sudden"]),
+                        r: d => rScale(d["frequency"]),
+                        "fill": d => getColor(d["topic"]),
+                        "class": d => d["short"],
+                        "opacity": 0
+                    })
+                         .transition()
+                         .duration(200)
+                         .attr("opacity", 1);
+
+                // draw line
+                var arr = [];
+                d3.selectAll("." + $(this).attr("class"))[0].forEach((d,i) => {
+                    arr.push({
+                        x: d.getAttribute("cx"),
+                        y: d.getAttribute("cy")
+                    })
+                });
+                connection.transition()
+                    .duration(200)
+                    .style("opacity", .9)
+                    .style("fill","none")
+                    .style("stroke","black")
+                    .style("stroke-width","2px")
+                    .attr("id", $(this).attr("class"))
+                    .attr("d", line(arr));
+
+            })
+            .on("mouseout", function (d) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity",0);
+                connection.transition()
+                    .duration(200)
+                    .style("opacity",0);
+
+                // family.transition()
+                //     .duration(500)
+                //     .style("opacity",0);
+                //
+                family.selectAll("circle")
+                    .transition()
+                        .duration(200)
+                    .style("opacity",0)
+                    .remove();
+            })
+        ;
+        svg.append("g")
+            .attr({
+                "class": "x axis",
+                "transform": "translate(0," + (height-padding) + ")"
+            })
+            .call(xAxis);
+
+        svg.append("g")
+            .attr({
+                "class": "y axis",
+                "transform": "translate(" + padding + ",0)"
+            })
+            .call(yAxis);
+
+        svg.append("text")
+            .attr("transform",
+                "translate(" + (width/2) + " ," +
+                (height-10) + ")")
+            .style("text-anchor", "middle")
+            .text("Frequency")
+            .attr("font-size", "20px");
+
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Sudden attention")
+            .attr("font-size", "20px");
+
+        svg2.append("g")
+            .attr("class", "hexagon")
+            .selectAll(".hex")
+            .data(hexbin(points))		// take in each bin
+            .enter()
+            .append("path")
+            .attr("d", hexbin.hexagon())	// return path string with the specified radius
+            .attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")"})
+            // slide hexagon to the right position
+            .attr("fill", function(d) {return colorHex(d.length)});	// color with corresponding color
+
+        svg2.append("g")
+            .attr({
+                "class": "x axis",
+                "transform": "translate(0," + (height-padding) + ")"
+            })
+            .call(xAxis);
+
+        svg2.append("g")
+            .attr({
+                "class": "y axis",
+                "transform": "translate(" + padding + ",0)"
+            })
+            .call(yAxis);
+
+        svg2.append("text")
+            .attr("transform",
+                "translate(" + (width/2) + " ," +
+                (height-10) + ")")
+            .style("text-anchor", "middle")
+            .text("Frequency")
+            .attr("font-size", "20px");
+
+        svg2.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Sudden attention")
+            .attr("font-size", "20px");
+
+
+    });
+</script>
+</body>
+
+</html>

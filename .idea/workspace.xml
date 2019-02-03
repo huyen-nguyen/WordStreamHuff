@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="074fc428-146b-476e-a494-dd4e5355e88c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/getData.html" beforeDir="false" afterPath="$PROJECT_DIR$/test/plotData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HuffProcessing/plotData.html" beforeDir="false" afterPath="$PROJECT_DIR$/HuffProcessing/plotData.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,35 +17,38 @@
     <session id="-2164610">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="html" value="5" />
+          <entry key="html" value="9" />
           <entry key="js" value="3" />
-          <entry key="tsv" value="4" />
+          <entry key="json" value="3" />
+          <entry key="tsv" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="5" />
+          <entry key="HTML" value="9" />
+          <entry key="JSON" value="3" />
           <entry key="JavaScript" value="3" />
-          <entry key="TSV" value="4" />
+          <entry key="TSV" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="2663" />
+          <entry key="html" value="5253" />
           <entry key="js" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="2663" />
+          <entry key="HTML" value="5253" />
           <entry key="JavaScript" value="15" />
         </counts>
       </usages-collector>
@@ -55,40 +57,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/javascripts/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7656">
-              <caret line="319" column="7" selection-start-line="319" selection-start-column="7" selection-end-line="319" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/loaddata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="4" selection-start-column="4" selection-end-column="4" />
+            <state relative-caret-position="558">
+              <caret line="221" column="22" selection-start-line="221" selection-start-column="22" selection-end-line="221" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/plotData.html">
+        <entry file="file://$PROJECT_DIR$/HuffProcessing/plotData.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="74" column="28" lean-forward="true" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
+            <state relative-caret-position="2045">
+              <caret line="123" column="26" lean-forward="true" selection-start-line="123" selection-start-column="26" selection-end-line="123" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -103,8 +84,39 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/HuffingtonFrom2009.tsv">
-          <provider selected="true" editor-type-id="LargeFileEditor" />
+        <entry file="file://$PROJECT_DIR$/HuffProcessing/loadFileJSON.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="5" column="23" lean-forward="true" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HuffProcessing/joinJSON.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="5" selection-start-line="5" selection-end-line="5" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HuffProcessing/getSudden.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="5" selection-start-line="5" selection-end-line="6" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HuffProcessing/test.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="648">
+              <caret line="27" column="6" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="6" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -133,7 +145,13 @@
       <find>streaml</find>
       <find>path</find>
       <find>translate</find>
+      <find>topwords</find>
+      <find>&quot;word&quot;</find>
+      <find>&quot;id&quot;</find>
     </findStrings>
+    <replaceStrings>
+      <replace>topRange</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -149,6 +167,14 @@
         <option value="$PROJECT_DIR$/huff.html" />
         <option value="$PROJECT_DIR$/test/getData.html" />
         <option value="$PROJECT_DIR$/test/plotData.html" />
+        <option value="$PROJECT_DIR$/loadFileJSON.html" />
+        <option value="$PROJECT_DIR$/data/HuffProcessing/loadFileJSON.html" />
+        <option value="$PROJECT_DIR$/HuffProcessing/joinJSON.html" />
+        <option value="$PROJECT_DIR$/HuffProcessing/suddenFromJSON.html" />
+        <option value="$PROJECT_DIR$/HuffProcessing/getSudden.html" />
+        <option value="$PROJECT_DIR$/HuffProcessing/test.html" />
+        <option value="$PROJECT_DIR$/HuffProcessing/loadFileJSON.html" />
+        <option value="$PROJECT_DIR$/HuffProcessing/plotData.html" />
       </list>
     </option>
   </component>
@@ -159,9 +185,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1187" />
+    <option name="x" value="932" />
     <option name="y" value="23" />
-    <option name="width" value="1249" />
+    <option name="width" value="1381" />
     <option name="height" value="1417" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -202,17 +228,23 @@
             <path>
               <item name="WordStreamHuff" type="b2602c69:ProjectViewProjectNode" />
               <item name="WordStreamHuff" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="Huffs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WordStreamHuff" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WordStreamHuff" type="462c0819:PsiDirectoryNode" />
+              <item name="HuffProcessing" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WordStreamHuff" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WordStreamHuff" type="462c0819:PsiDirectoryNode" />
               <item name="javascripts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WordStreamHuff" type="b2602c69:ProjectViewProjectNode" />
               <item name="WordStreamHuff" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WordStreamHuff" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WordStreamHuff" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -226,9 +258,13 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="web.server" />
+    <property name="settings.editor.selected.configurable" value="project.propDebugger" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/data/HuffProcessing" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/data" />
     </key>
@@ -245,6 +281,25 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="JavaScript Debug.plotData.html">
+    <configuration name="loadFileJSON.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/WordStreamHuff/data/HuffProcessing/loadFileJSON.html">
+      <method v="2" />
+    </configuration>
+    <configuration name="plotData.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/WordStreamHuff/HuffProcessing/plotData.html">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.index.html" />
+      <item itemvalue="JavaScript Debug.loadFileJSON.html" />
+      <item itemvalue="JavaScript Debug.plotData.html" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.plotData.html" />
+        <item itemvalue="JavaScript Debug.loadFileJSON.html" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -257,23 +312,24 @@
       <updated>1548966809568</updated>
       <workItem from="1548966812537" duration="17301000" />
       <workItem from="1549042263363" duration="12243000" />
+      <workItem from="1549133277200" duration="31041000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29544000" />
+    <option name="totallyTimeSpent" value="60585000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1187" y="23" width="1249" height="1417" extended-state="0" />
+    <frame x="1179" y="23" width="1381" height="1417" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.18690096" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16838235" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39954165" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.024446143" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -292,26 +348,25 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/HuffProcessing/plotData.html</url>
+          <line>129</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/javascripts/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7656">
-          <caret line="319" column="7" selection-start-line="319" selection-start-column="7" selection-end-line="319" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../LearningJS/ScatterplotUpdate.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="648">
           <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/HuffingtonFrom2009.tsv">
-      <provider selected="true" editor-type-id="LargeFileEditor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Huffington.tsv">
-      <provider selected="true" editor-type-id="LargeFileEditor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/test/progress.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -320,10 +375,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/EmptyWheel.tsv">
+    <entry file="file://$PROJECT_DIR$/javascripts/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="3" column="471" selection-start-line="3" selection-start-column="471" selection-end-line="3" selection-end-column="471" />
+        <state relative-caret-position="7656">
+          <caret line="319" column="7" selection-start-line="319" selection-start-column="7" selection-end-line="319" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Huffington.tsv">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state>
+          <caret column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Huffs/2007.json">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="-43010">
+          <caret column="1" lean-forward="true" selection-start-column="1" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Huffs/2008.json">
+      <provider selected="true" editor-type-id="LargeFileEditor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/loaddata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="221" column="22" selection-start-line="221" selection-start-column="22" selection-end-line="221" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Huffs/freq.json">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="-288618" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/HuffingtonFrom2009.tsv">
+      <provider selected="true" editor-type-id="LargeFileEditor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HuffProcessing/getSudden.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="5" selection-start-line="5" selection-end-line="6" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -334,34 +438,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/loadFileJSON.html">
+    <entry file="file://$PROJECT_DIR$/HuffProcessing/test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
+        <state relative-caret-position="648">
+          <caret line="27" column="6" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/d3.layout.wordstream.js">
+    <entry file="file://$PROJECT_DIR$/HuffProcessing/joinJSON.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state relative-caret-position="120">
+          <caret line="5" selection-start-line="5" selection-end-line="5" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/loaddata.js">
+    <entry file="file://$PROJECT_DIR$/data/EmptyWheel.tsv">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="4" selection-start-column="4" selection-end-column="4" />
+        <state relative-caret-position="142">
+          <caret line="3" column="471" selection-start-line="3" selection-start-column="471" selection-end-line="3" selection-end-column="471" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/plotData.html">
+    <entry file="file://$PROJECT_DIR$/HuffProcessing/loadFileJSON.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="74" column="28" lean-forward="true" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
+        <state relative-caret-position="120">
+          <caret line="5" column="23" lean-forward="true" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HuffProcessing/plotData.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2045">
+          <caret line="123" column="26" lean-forward="true" selection-start-line="123" selection-start-column="26" selection-end-line="123" selection-end-column="26" />
         </state>
       </provider>
     </entry>

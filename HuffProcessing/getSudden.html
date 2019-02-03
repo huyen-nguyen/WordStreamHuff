@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get sudden</title>
+    <script src="../lib/d3.min.js"></script>
+    <script src="../lib/loaddata.js"></script>
+</head>
+<body>
+<script>
+    d3.json("../data/Huffs/freq.json", function (error, data) {
+        if (error) {
+            throw error;
+            console.log(error);
+        }
+
+        processSuddenFreq(data);
+
+        var sub = d3.keys(data[0].words).map(d => d);
+        for (var i = 0; i < data.length; i ++){
+            for (var j in sub){
+                data[i].words[sub[j]].sort(function(a, b){//sort the terms by frequency
+                    return b.sudden-a.sudden;
+                }).filter(function(d){return d.text; })//filter out empty words
+                //.slice(0, Math.min(data[i].words[sub[j]].length, space))
+                ;
+            }
+        }
+
+        var gdata = JSON.parse(JSON.stringify(data));
+        console.log("data: ");
+        console.log(gdata);
+
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join JSON</title>
+    <script src="../lib/d3.min.js"></script>
+</head>
+<body>
+<script>
+    var freq = [];
+    for (let i = 0; i < 8; i++){
+        d3.json("../data/Huffs/" + eval(i+2007) + ".json", function (error, data) {
+            if (error) {
+                throw error;
+                console.log(error);
+            }
+            freq[i] = data;
+            console.log(i);
+        })
+    }
+    // ------ at console
+    // var arr = [];
+    // freq.forEach((d,i)=> {
+    //     arr = arr.concat(d)
+    // })
+
+</script>
+</body>
+</html>
