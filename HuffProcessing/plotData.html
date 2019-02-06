@@ -5,6 +5,7 @@
     <title>Sudden - Freq</title>
 
     <script type="text/javascript" src="https://d3js.org/d3.v3.js"></script>
+    <script src="../lib/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -67,8 +68,11 @@
     var uniqueObj = {};
     var id = {};
     var testId = {};
+    var uniqueWordsObj;
 
+    var data = [];
     var uniqueWords = [];
+    var uniqueList = [];
     var dataset = [];
     var points = [];
     var size = [];
@@ -87,88 +91,119 @@
             return "#000000";
     }
 
-    var interpolateTypes = ['cardinal'];
     var line = d3.svg.line()
         .x(d => d.x)
         .y(d => d.y)
-        .interpolate(interpolateTypes[0])
+        .interpolate('cardinal')
     ;
 
     // Hexbin generator
-    var hexbin = d3.hexbin().radius(9)
+    var hexbin = d3.hexbin().radius(7)
        ;
 
-    d3.json("../data/Huff.json", function(error, data) {
+    d3.json("../data/Huff.json", function(error, rawData) {
         if (error) throw error;
 
+        var len = rawData.length;
+        data = rawData;
+
+        // get top50 words
         data.forEach((month, i) => {
             categories.forEach((topic,j) => {
                 for (let k = 0; k < topRange; k++){
                     var word = month["words"][topic][k];
                     topWords.push({
-                        frequency: word.frequency,
-                        id: word.id,
-                        sudden: word.sudden,
-                        topic: word.topic,
-                        text: word.text,
-                        short: word.text.split(" ").join("").split(".").join("") +
-                            word.topic.split(" ").join("").split(".").join("")
+                        fam: word.text.replace(/\.|\-/g,"_").split(" ").join("") +"-"+     // family
+                            word.topic       // same content, diff topic
                     });
                 }
             })
         });
 
-        console.log("topWords:");
-        console.log(topWords);  // 18,800
-
-        // init max sudden
+        // init uniqueObj = array of
         topWords.forEach((word,i) => {
-            uniqueObj[word.text] = 1;
-            maxSudden[word.text] = 1;
+            uniqueObj[word.fam] = [];
+            maxSudden[word.fam] = 1;
         });
+        uniqueList = d3.keys(uniqueObj);
 
-        topWords.forEach((word,i) => {
-            if (word.sudden >= maxSudden[word.text]){
-                maxSudden[word.text] = word.sudden;
-                id[word.text] = word.id;
+        uniqueList.forEach((key,i) => {
+            var arr = key.split("-");
+            for (var j = 0; j < len; j++){
+                let text = arr[0],
+                    topic = arr[1];
+
+                uniqueObj[key].push({
+                    frequency: 0,
+                    sudden: 1,
+                    topic: topic,
+                    text: text,
+                    fam: text.replace(/\.|\-/g,"_").split(" ").join("") +"-"+     // family
+                        topic
+                });
             }
         });
 
-        // S1:
-        uniqueWords = [];
-        topWords.forEach((word,i) => {
-            if (word.id === id[word.text]){
-                uniqueWords.push(word);
-            }
-        });
-
+        // get data in
         data.forEach((month, i) => {
             categories.forEach((topic,j) => {
-                month["words"][topic].forEach((word,k) => {
-                    if (maxSudden[word.text] !== undefined) {
-                        dataset.push({
+                month["words"][topic].forEach((word, k) => {
+                    var compact = word.text.replace(/\.|\-/g,"_").split(" ").join("") +"-"+     // family
+                        word.topic;
+                    if (uniqueList.indexOf(compact) > -1){      // exist
+                        uniqueObj[compact][i] = {
                             frequency: word.frequency,
                             id: word.id,
                             sudden: word.sudden,
                             topic: word.topic,
                             text: word.text,
-                            short: word.text.split(" ").join("").split(".").join("") + word.topic.split(" ").join("").split(".").join("")
-                        });
+                            fam: word.text.replace(/\.|\-/g,"_").split(" ").join("") +"-"+     // family
+                                word.topic
+                        };
                     }
-                });
+                })
             })
         });
+
+        // re-compute sudden change
+        uniqueList.forEach((key,i) => {
+            for (let j = 1; j < len; j++){
+                uniqueObj[key][j].sudden = (uniqueObj[key][j].frequency + 1) / (uniqueObj[key][j-1].frequency + 1);
+            }
+        });
+
+        // get max Sudden
+        uniqueList.forEach((key,i) => {
+            maxSudden[key] = d3.max(uniqueObj[key], d => d.sudden)
+        });
+
+        // S1
+        dataset = [];
+        uniqueWordsObj = {};
+        uniqueList.forEach((key,i) => {
+            uniqueObj[key].forEach((word,j) => {
+                dataset.push(word);
+                if (word.sudden === maxSudden[key]){
+                    uniqueWordsObj[key] = word;
+                }
+            })
+        });
+
+        uniqueWords = [];
+        for (var key in uniqueWordsObj){
+            uniqueWords.push(uniqueWordsObj[key])
+        }
 
         console.log("dataset:");
         console.log(dataset);
         // Configure scale
         var xScale =
-            d3.scale.log()
-            .domain([1,d3.max(dataset, d => d["frequency"])])
+            d3v5.scaleSymlog()
+            .domain([0,d3.max(dataset, d => d["frequency"])])
             .range([padding, width - padding]);
 
-        var yScale = d3.scale.log()
-            .domain([0.1,d3.max(dataset, d => d["sudden"])])
+        var yScale = d3v5.scaleSymlog()
+            .domain([0,d3.max(dataset, d => d["sudden"])])
             .range([height - padding, padding]);
 
         var rScale = d3.scale.linear()
@@ -249,8 +284,7 @@
                 cy: d => yScale(d["sudden"]),
                 r: d => rScale(d["frequency"]),
                 "fill": d => getColor(d["topic"]),
-                "class": d => d["short"],
-                // "opacity": 0
+                "class": d => d["fam"],
             })
             .on("mouseover", function (d) {
                 // tooltip
@@ -263,12 +297,13 @@
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
 
-                console.log("# of \"" + d["short"] +"\" points: " + dataset.filter(d => d["short"] ===
-                    $(this).attr("class")).length);
+                // console.log("# of \"" + d["fam"] +"\" points: " + dataset.filter(d => d["fam"] ===
+                //     $(this).attr("class")).length);
                 // JOIN new data with old elements.
                 var relation = family.selectAll("circle")
-                    .data(dataset.filter(d => d["short"] === $(this).attr("class")), d => d.id);
+                    .data(dataset.filter(d => d["fam"] === $(this).attr("class")));
 
+                // console.log(dataset.filter(d => d["fam"] === $(this).attr("class")));
                 // EXIT old elements not present in new data.
                 relation.exit()
                     .transition()
@@ -285,7 +320,7 @@
                         cy: d => yScale(d["sudden"]),
                         r: d => rScale(d["frequency"]),
                         "fill": d => getColor(d["topic"]),
-                        "class": d => d["short"],
+                        "class": d => d["fam"],
                     });
 
                 // ENTER new elements present in new data.
@@ -296,8 +331,8 @@
                         cy: d => yScale(d["sudden"]),
                         r: d => rScale(d["frequency"]),
                         "fill": d => getColor(d["topic"]),
-                        "class": d => d["short"],
-                        "opacity": 0
+                        "class": d => d["fam"],
+                        // "opacity": 0
                     })
                          .transition()
                          .duration(200)
@@ -307,11 +342,15 @@
                 var arr = [];
                 d3.selectAll("." + $(this).attr("class"))[0].forEach((d,i) => {
                     arr.push({
+                        "class": d.getAttribute("class"),
                         x: d.getAttribute("cx"),
                         y: d.getAttribute("cy")
                     })
                 });
-                connection.transition()
+
+                console.log(arr);
+                connection
+                    .transition()
                     .duration(200)
                     .style("opacity", .9)
                     .style("fill","none")
@@ -320,19 +359,27 @@
                     .attr("id", $(this).attr("class"))
                     .attr("d", line(arr));
 
+                // var totalLength = connection.node().getTotalLength();
+                //
+                // connection
+                //     .attr("stroke-dasharray", totalLength + " " + totalLength)
+                //     .attr("stroke-dashoffset", totalLength)
+                //     .transition()
+                //     .duration(1000)
+                //     .ease("linear")
+                //     .attr("stroke-dashoffset", 0);
+
+
             })
             .on("mouseout", function (d) {
                 div.transition()
                     .duration(200)
                     .style("opacity",0);
+
                 connection.transition()
                     .duration(200)
                     .style("opacity",0);
 
-                // family.transition()
-                //     .duration(500)
-                //     .style("opacity",0);
-                //
                 family.selectAll("circle")
                     .transition()
                         .duration(200)

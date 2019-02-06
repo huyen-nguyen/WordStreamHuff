@@ -4,28 +4,14 @@
     <meta charset="UTF-8">
     <title>Test data</title>
     <script src="../lib/d3.min.js"></script>
+    <script src="../lib/d3.v5.min.js"></script>
     <script src="../lib/loaddata.js"></script>
 </head>
 <body>
 <script>
-    d3.json("../data/Huffs/freq.json", function (error, data) {
-        if (error) {
-            throw error;
-            console.log(error);
-        }
+    var myLogScale = d3v5.scaleSymlog([0, 100], [50, 1150]);
+    console.log(myLogScale(71));
 
-        console.log("data: ");
-        console.log(data);
-
-    })
-
-    // ----- CONSOLE: Test length of all words
-    len = 0;
-    data.forEach((d,i) => {
-        categories.forEach((topic,j) => {
-            len += d["words"][topic].length
-        })
-    })
 </script>
 </body>
 </html>
